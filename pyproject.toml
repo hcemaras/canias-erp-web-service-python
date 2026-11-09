@@ -1,0 +1,57 @@
+[build-system]
+requires = ["hatchling>=1.27"]
+build-backend = "hatchling.build"
+
+[project]
+name = "canias-erp-web-service"
+dynamic = ["version"]
+description = "Python client for the CANIAS ERP (caniasERP, TROIA) Web Service 2.0: login, callService, listServices, logout."
+readme = "README.md"
+requires-python = ">=3.10"
+license = "MIT"
+authors = [{ name = "Hüseyin Cem Aras" }]
+keywords = [
+    "canias",
+    "caniaserp",
+    "canias-erp",
+    "troia",
+    "erp",
+    "erp-integration",
+    "web-service",
+    "webservice",
+    "soap",
+    "soap-client",
+]
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "Intended Audience :: Developers",
+    "Natural Language :: English",
+    "Natural Language :: Turkish",
+    "Operating System :: OS Independent",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3 :: Only",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+    "Programming Language :: Python :: 3.14",
+    "Programming Language :: Python :: 3.15",
+    "Topic :: Office/Business",
+    "Topic :: Software Development :: Libraries :: Python Modules",
+    "Typing :: Typed",
+]
+
+[project.urls]
+Homepage = "https://github.com/hcemaras/canias-erp-web-service-python"
+"Türkçe" = "https://github.com/hcemaras/canias-erp-web-service-python/blob/main/README.tr.md"
+Changelog = "https://github.com/hcemaras/canias-erp-web-service-python/blob/main/CHANGELOG.md"
+Issues = "https://github.com/hcemaras/canias-erp-web-service-python/issues"
+
+[project.scripts]
+canias-erp-web-service-check = "canias_erp_web_service.check:main"
+
+[tool.hatch.version]
+path = "src/canias_erp_web_service/__init__.py"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/canias_erp_web_service"]
