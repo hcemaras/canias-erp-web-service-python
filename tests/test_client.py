@@ -27,6 +27,18 @@ def _http_ok(body: str) -> bytes:
     return head.encode("ascii") + data
 
 
+def _read_request(conn: socket.socket) -> None:
+    data = b""
+    while b"\r\n\r\n" not in data:
+        data += conn.recv(65536)
+    head, _, body = data.partition(b"\r\n\r\n")
+    length = next(
+        (int(line.split(b":", 1)[1]) for line in head.split(b"\r\n") if line.lower().startswith(b"content-length:")), 0
+    )
+    while len(body) < length:
+        body += conn.recv(65536)
+
+
 class CaniasWebServiceClientTest(unittest.TestCase):
     def serve(self, **responses: str | tuple[int, str]) -> FakeAxis:
         fake = FakeAxis(**responses)
@@ -44,8 +56,9 @@ class CaniasWebServiceClientTest(unittest.TestCase):
             for reply in replies:
                 conn, _addr = listener.accept()
                 with conn:
-                    conn.recv(65536)
+                    _read_request(conn)  # unread data makes Windows reset the connection on close
                     conn.sendall(reply)
+                    conn.shutdown(socket.SHUT_WR)
 
         threading.Thread(target=serve, daemon=True).start()
         host, port = listener.getsockname()
