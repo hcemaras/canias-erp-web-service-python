@@ -85,6 +85,11 @@ class CaniasWebServiceClientTest(unittest.TestCase):
         self.assertEqual(ctx.exception.code, 15)
         self.assertEqual(fake.calls, ["login"])
 
+    def test_login_error_code_parses_both_server_wordings(self) -> None:
+        self.assertEqual(LoginError("login error: 15").code, 15)
+        self.assertEqual(LoginError("login failed : 15").code, 15)
+        self.assertIsNone(LoginError("something else").code)
+
     def test_failed_call_still_releases_the_session(self) -> None:
         fake = self.serve(login=LOGIN_OK, callService=(500, FAULT))
         with self.assertRaises(SoapFault), CaniasWebServiceClient(fake.config()) as client:

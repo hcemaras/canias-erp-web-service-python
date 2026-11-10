@@ -56,7 +56,8 @@ LOGIN_ERRORS: dict[int, str] = {
     28: "Dil lisansı hatası",
 }
 
-_LOGIN_ERROR_RE = re.compile(r"login error:\s*(\d+)", re.IGNORECASE)
+# The docs say "login error: n"; a live CANIAS server (2026-11) answers "login failed : n".
+_LOGIN_ERROR_RE = re.compile(r"login (?:error|failed)\s*:\s*(\d+)", re.IGNORECASE)
 _HREF_DEPTH_LIMIT = 32
 
 
